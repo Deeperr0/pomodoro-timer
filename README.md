@@ -54,5 +54,4 @@ Mobile preview:
 ## Author
 
 - Website - [Deeperr0](https://www.github.com/Deeperr0)
-- Frontend Mentor - [@Deeperr0](https://www.frontendmentor.io/profile/Deeperr0)
 - Twitter - [@deeperr00](https://www.twitter.com/deeperr00)

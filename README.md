@@ -1,11 +1,11 @@
-# Frontend Mentor - Pomodoro app solution
+# Pomodoro App
 
-This is a solution to the [Pomodoro app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/pomodoro-app-KBFnycJ6G). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
+This is a Pomodoro app that allows users to manage their time efficiently by using customizable timers for focused work sessions and breaks.
 
 ## Table of contents
 
 - [Overview](#overview)
-  - [The challenge](#the-challenge)
+  - [Features](#features)
   - [Screenshot](#screenshot)
   - [Links](#links)
 - [My process](#my-process)
@@ -14,9 +14,9 @@ This is a solution to the [Pomodoro app challenge on Frontend Mentor](https://ww
 
 ## Overview
 
-### The challenge
+### Features
 
-Users should be able to:
+Users can:
 
 - Set a pomodoro timer and short & long break timers
 - Customize how long each timer runs for
@@ -39,7 +39,7 @@ Mobile preview:
 
 ### Links
 
-- Solution URL: [Solution](https://www.frontendmentor.io/learning-paths/advanced-css-techniques-vdOtKjIC4V/steps/66ce1efa3c19191dc3d477c6/challenge/refactor)
+- Repository URL: [Code Repository](https://www.frontendmentor.io/learning-paths/advanced-css-techniques-vdOtKjIC4V/steps/66ce1efa3c19191dc3d477c6/challenge/refactor)
 - Live Site URL: [Live Site](https://pomodoro-timer-responsive.netlify.app)
 
 ## My process

@@ -39,7 +39,6 @@ Mobile preview:
 
 ### Links
 
-- Repository URL: [Code Repository](https://www.frontendmentor.io/learning-paths/advanced-css-techniques-vdOtKjIC4V/steps/66ce1efa3c19191dc3d477c6/challenge/refactor)
 - Live Site URL: [Live Site](https://pomodoro-timer-responsive.netlify.app)
 
 ## My process

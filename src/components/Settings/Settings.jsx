@@ -136,14 +136,14 @@ export default function Settings({ setToggleSettings }) {
       </div>
       <hr className="mx-6"></hr>
       {/* Font Customization */}
-      <div className="flex flex-col items-center p-6 md:px-10 md:flex-row md:justify-between">
+      <div className="flex items-center p-6 md:px-10 justify-between">
         <p
-          className="text-veryDarkBlue text-[11px] tracking-[4.23px] font-bold uppercase"
+          className="h-full text-veryDarkBlue text-[11px] tracking-[4.23px] font-bold uppercase"
           style={{ fontFamily: localFont }}
         >
           Font
         </p>
-        <div className="mt-[18px] [&_button]:rounded-full [&_button]:aspect-square [&_button]:w-10 [&_button]:h-10 flex gap-3 items-center md:mt-0">
+        <div className="[&_button]:rounded-full [&_button]:aspect-square [&_button]:w-10 [&_button]:h-10 flex gap-3 items-center md:mt-0">
           <button
             className={`font-kumbh ${
               localFont === "Kumbh Sans"
@@ -178,14 +178,14 @@ export default function Settings({ setToggleSettings }) {
       </div>
       <hr className="mx-6"></hr>
       {/* Color Customization */}
-      <div className="flex flex-col items-center p-6 md:px-10 md:flex-row md:justify-between">
+      <div className="flex items-center p-6 md:px-10 justify-between">
         <p
-          className="text-veryDarkBlue text-[11px] tracking-[4.23px] font-bold uppercase"
+          className="text-veryDarkBlue text-[11px] tracking-[4.23px] font-bold uppercase h-full"
           style={{ fontFamily: localFont }}
         >
           Color
         </p>
-        <div className="mt-[18px] [&>button]:rounded-full [&>button]:aspect-square [&>button]:w-10 [&>button]:h-10 flex gap-4 md:mt-0 items-center">
+        <div className="h-full [&>button]:rounded-full [&>button]:aspect-square [&>button]:w-10 [&>button]:h-10 flex gap-4 md:mt-0 items-center">
           <button
             className="bg-customRed flex justify-center items-center"
             onClick={() => setLocalBackgroundColor("#f87070")}
@@ -263,7 +263,7 @@ export default function Settings({ setToggleSettings }) {
           </p>
         </div>
         <div className="flex flex-col gap-2">
-          <div className="flex gap-2 text-">
+          <div className="flex flex-col md:flex-row gap-2 text-">
             <input
               type="file"
               accept="audio/*"
@@ -286,7 +286,7 @@ export default function Settings({ setToggleSettings }) {
       </div>
       <div className="flex justify-center w-full">
         <button
-          className="relative py-[18px] px-12 bg-customRed rounded-full top-8 font-bold leading-tight hover:brightness-125"
+          className="relative py-[18px] px-12 bg-customRed rounded-full top-4 md:top-8 font-bold leading-tight hover:brightness-125"
           style={{ fontFamily: localFont }}
           onClick={() => {
             applyChanges();

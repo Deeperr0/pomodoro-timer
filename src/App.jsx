@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./Home";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "./firebase";
+// import { onAuthStateChanged } from "firebase/auth";
+// import { auth, db } from "./firebase";
 import React from "react";
-import { doc, getDoc } from "firebase/firestore";
+// import { doc, getDoc } from "firebase/firestore";
 // import Profile from "./components/Profile";
 
 export const UserContext = React.createContext();

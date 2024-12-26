@@ -281,7 +281,7 @@ export default function Settings({ setToggleSettings }) {
           </p>
         </div>
         <div className="flex flex-col gap-3">
-          <div className="flex flex-col md:flex-row gap-3 md:gap-0 md:justify-between text-">
+          <div className="flex flex-col md:flex-row gap-3 md:gap-0 md:justify-between text-sm md:text-base">
             <input
               type="file"
               accept="audio/*"
@@ -298,7 +298,7 @@ export default function Settings({ setToggleSettings }) {
       </div>
       <div className="flex justify-center w-full">
         <button
-          className="relative py-[18px] px-12 bg-customRed rounded-full top-5 -mt-4 font-bold leading-tight hover:brightness-125"
+          className="relative text-sm md:text-base py-4 px-10 md:py-[18px] md:px-12 bg-customRed rounded-full top-5 -mt-8 md:-mt-4 font-bold leading-tight hover:brightness-125"
           style={{ fontFamily: localFont }}
           onClick={() => {
             applyChanges();

@@ -298,7 +298,7 @@ export default function Settings({ setToggleSettings }) {
       </div>
       <div className="flex justify-center w-full">
         <button
-          className="relative py-[18px] px-12 bg-customRed rounded-full top-4 md:top-8 font-bold leading-tight hover:brightness-125"
+          className="relative py-[18px] px-12 bg-customRed rounded-full top-5 -mt-4 font-bold leading-tight hover:brightness-125"
           style={{ fontFamily: localFont }}
           onClick={() => {
             applyChanges();

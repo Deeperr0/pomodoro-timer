@@ -98,16 +98,21 @@ export default function Settings({ setToggleSettings }) {
       </div>
       <hr></hr>
       {/* Time Customization */}
-      <div className="flex flex-col items-center p-6 md:px-10 gap-4">
+      <div className="flex flex-col items-center p-6 md:px-10 gap-3 md:gap-4">
         <p
           className="text-veryDarkBlue text-[11px] font-bold uppercase tracking-[4.23px] w-full text-center md:text-left"
           style={{ fontFamily: localFont }}
         >
           Time (Minutes)
         </p>
-        <div className="flex flex-col gap-4 text-black md:flex-row w-full md:w-auto md:gap-5 md:[&_p]:w-full md:[&>div]:gap-[10px]">
+        <div className="flex flex-col gap-3 text-black md:flex-row w-full md:w-auto md:gap-5 md:[&_p]:w-full md:[&>div]:gap-[10px]">
           <div className="flex justify-between w-full items-center group md:flex-col ">
-            <p style={{ fontFamily: localFont }}>pomodoro</p>
+            <p
+              className="text-sm md:text-base"
+              style={{ fontFamily: localFont }}
+            >
+              pomodoro
+            </p>
             <TimeInput
               time={localPomodoro}
               setTime={setLocalPomodoro}
@@ -115,7 +120,12 @@ export default function Settings({ setToggleSettings }) {
             />
           </div>
           <div className="flex justify-between w-full items-center group md:flex-col">
-            <p style={{ fontFamily: localFont }}>short break</p>
+            <p
+              className="text-sm md:text-base"
+              style={{ fontFamily: localFont }}
+            >
+              short break
+            </p>
             <TimeInput
               time={localShortBreak}
               setTime={setLocalShortBreak}
@@ -124,7 +134,12 @@ export default function Settings({ setToggleSettings }) {
             />
           </div>
           <div className="flex justify-between w-full items-center group md:flex-col">
-            <p style={{ fontFamily: localFont }}>long break</p>
+            <p
+              className="text-sm md:text-base"
+              style={{ fontFamily: localFont }}
+            >
+              long break
+            </p>
             <TimeInput
               time={localLongBreak}
               setTime={setLocalLongBreak}
@@ -136,7 +151,7 @@ export default function Settings({ setToggleSettings }) {
       </div>
       <hr className="mx-6"></hr>
       {/* Font Customization */}
-      <div className="flex items-center p-6 md:px-10 justify-between">
+      <div className="flex items-center py-4 px-6 md:py-6 md:px-10 justify-between">
         <p
           className="h-full text-veryDarkBlue text-[11px] tracking-[4.23px] font-bold uppercase"
           style={{ fontFamily: localFont }}
@@ -178,14 +193,14 @@ export default function Settings({ setToggleSettings }) {
       </div>
       <hr className="mx-6"></hr>
       {/* Color Customization */}
-      <div className="flex items-center p-6 md:px-10 justify-between">
+      <div className="flex items-center py-4 px-6 md:py-6 md:px-10 justify-between">
         <p
           className="text-veryDarkBlue text-[11px] tracking-[4.23px] font-bold uppercase h-full"
           style={{ fontFamily: localFont }}
         >
           Color
         </p>
-        <div className="h-full [&>button]:rounded-full [&>button]:aspect-square [&>button]:w-10 [&>button]:h-10 flex gap-4 md:mt-0 items-center">
+        <div className="h-full [&>button]:rounded-full [&>button]:aspect-square [&>button]:w-10 [&>button]:h-10 flex gap-3 md:gap-4 md:mt-0 items-center">
           <button
             className="bg-customRed flex justify-center items-center"
             onClick={() => setLocalBackgroundColor("#f87070")}
@@ -250,20 +265,20 @@ export default function Settings({ setToggleSettings }) {
       </div>
       <hr className="mx-6"></hr>
       {/* Alarm Sound Settings */}
-      <div className="flex flex-col items-center p-6 md:px-10 gap-4">
-        <div className="text-center gap-2">
+      <div className="flex flex-col items-center p-6 md:px-10 gap-3 md:gap-4">
+        <div className="text-center gap-3">
           <p
             className="text-veryDarkBlue text-[11px] font-bold uppercase tracking-[4.23px]"
             style={{ fontFamily: localFont }}
           >
             Alarm Sound
           </p>
-          <p className="text-veryDarkBlue text-[11px] font-bold uppercase tracking-[4.23px] opacity-50">
+          <p className="text-veryDarkBlue text-[11px] font-bold uppercase tracking-[2px] md:tracking-[4.23px] opacity-50">
             (Max 10 seconds will be played)
           </p>
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-col md:flex-row gap-2 text-">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col md:flex-row gap-3 text-">
             <input
               type="file"
               accept="audio/*"

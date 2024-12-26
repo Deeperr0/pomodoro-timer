@@ -6,7 +6,6 @@ export default function TimeInput({ time, setTime, defaultValue, font }) {
         min="1"
         max="60"
         value={time}
-        defaultValue={defaultValue}
         onChange={(e) => setTime(e.target.value)}
         className="bg-transparent font-bold text-sm leading-[17px] w-full h-full outline-none"
         style={{ fontFamily: font }}

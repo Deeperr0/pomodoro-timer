@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import TimeInput from "../TimeInput/TimeInput";
 import Overlay from "../Overlay";
+import bell from "../../assets/bell.wav";
 
 export default function Settings({ setToggleSettings }) {
   const [localPomodoro, setLocalPomodoro] = useState(
@@ -23,6 +24,7 @@ export default function Settings({ setToggleSettings }) {
     localStorage.getItem("alarmSound")
   );
   const audioRef = useRef(null); // Persistent reference to the Audio object
+  const alarmTimeoutRef = useRef(null); // Reference to stop the alarm after 10 seconds
 
   function applyChanges() {
     localStorage.setItem("localPomodoro", localPomodoro);
@@ -52,14 +54,15 @@ export default function Settings({ setToggleSettings }) {
 
   // Play alarm sound
   const playAlarmSound = () => {
-    if (alarmSoundURL) {
-      if (!audioRef.current) {
-        audioRef.current = new Audio(alarmSoundURL); // Create the audio object once
-      }
-      audioRef.current.play(); // Play the sound
-    } else {
-      console.log("No alarm sound found in localStorage!");
+    const alarmSoundURL = localStorage.getItem("alarmSound") || bell;
+    if (!audioRef.current) {
+      audioRef.current = new Audio(alarmSoundURL); // Create the audio object once
     }
+    audioRef.current.play(); // Play the sound
+    // Stop alarm sound after 10 seconds
+    alarmTimeoutRef.current = setTimeout(() => {
+      stopAlarmSound();
+    }, 10000);
   };
 
   // Stop alarm sound
@@ -278,7 +281,7 @@ export default function Settings({ setToggleSettings }) {
           </p>
         </div>
         <div className="flex flex-col gap-3">
-          <div className="flex flex-col md:flex-row gap-3 text-">
+          <div className="flex flex-col md:flex-row gap-3 md:gap-0 md:justify-between text-">
             <input
               type="file"
               accept="audio/*"
@@ -289,12 +292,6 @@ export default function Settings({ setToggleSettings }) {
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
             >
               Play Alarm Sound
-            </button>
-            <button
-              onClick={stopAlarmSound}
-              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-            >
-              Stop Alarm Sound
             </button>
           </div>
         </div>

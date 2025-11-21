@@ -1,10 +1,20 @@
 import { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import TimeInput from "../TimeInput/TimeInput";
-import Overlay from "../Overlay";
 import bell from "../../assets/bell.wav";
+import Overlay from "../Overlay";
+import { handleAlarmSoundChange } from "../../utils/alarmUtils";
+import { KeepAwakeToggle } from "../KeepAwakeToggle/KeepAwakeToggle";
+import { AudioUploadInput } from "../AudioUploadInput/AudioUploadInput";
 
-export default function Settings({ setToggleSettings }) {
+export default function Settings({
+  setToggleSettings,
+  font,
+  keepAwake,
+  setKeepAwake,
+  wakeLockSupported,
+  wakeLockError,
+}) {
   const [localPomodoro, setLocalPomodoro] = useState(
     parseInt(localStorage.getItem("localPomodoro")) || 25
   );
@@ -35,31 +45,10 @@ export default function Settings({ setToggleSettings }) {
     setToggleSettings((prev) => !prev);
   }
 
-  // Handle alarm sound file selection and auto-save
-  const handleAlarmSoundChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        const base64Sound = event.target.result; // Base64 encoded string
-        localStorage.setItem("alarmSound", base64Sound); // Save to localStorage
-        setAlarmSoundURL(base64Sound); // Update state
-        console.log("Alarm sound saved to localStorage!");
-      };
-
-      reader.readAsDataURL(file); // Convert file to Base64
-    }
-  };
-
   // Play alarm sound
   const playAlarmSound = () => {
-    const alarmSoundURL = localStorage.getItem("alarmSound") || bell;
-    if (!audioRef.current) {
-      audioRef.current = new Audio(alarmSoundURL); // Create the audio object once
-    }
-    audioRef.current.play(); // Play the sound
-    // Stop alarm sound after 10 seconds
+    audioRef.current = new Audio(alarmSoundURL || bell);
+    audioRef.current.play();
     alarmTimeoutRef.current = setTimeout(() => {
       stopAlarmSound();
     }, 10000);
@@ -88,6 +77,7 @@ export default function Settings({ setToggleSettings }) {
           height="14"
           onClick={() => {
             setToggleSettings((prev) => !prev);
+            stopAlarmSound();
           }}
           className="cursor-pointer text-darkBlue opacity-50 group-hover/container:opacity-100 transition-all duration-300"
         >
@@ -268,7 +258,7 @@ export default function Settings({ setToggleSettings }) {
       </div>
       <hr className="mx-6"></hr>
       {/* Alarm Sound Settings */}
-      <div className="flex flex-col items-center p-6 md:px-10 gap-3 md:gap-4">
+      <div className="flex flex-col items-center p-6 md:px-10 gap-3 md:gap-4 shrink-0">
         <div className="text-center gap-3">
           <p
             className="text-veryDarkBlue text-[11px] font-bold uppercase tracking-[4.23px]"
@@ -280,21 +270,29 @@ export default function Settings({ setToggleSettings }) {
             (Max 10 seconds will be played)
           </p>
         </div>
-        <div className="flex flex-col gap-3">
-          <div className="flex flex-col md:flex-row gap-3 md:gap-0 md:justify-between text-sm md:text-base">
-            <input
-              type="file"
-              accept="audio/*"
-              onChange={handleAlarmSoundChange}
+        <div className="flex flex-col gap-3 w-full">
+          <div className="flex flex-col gap-3 text-sm md:text-base">
+            <AudioUploadInput
+              onChange={(e) => handleAlarmSoundChange(e, setAlarmSoundURL)}
+              fileName={alarmSoundURL ? "Custom Audio" : null}
             />
             <button
               onClick={playAlarmSound}
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md w-fit mx-auto"
             >
               Play Alarm Sound
             </button>
           </div>
         </div>
+      </div>
+      <hr className="mx-6"></hr>
+      <div style={{ fontFamily: localFont }}>
+        <KeepAwakeToggle
+          keepAwake={keepAwake}
+          setKeepAwake={setKeepAwake}
+          supported={wakeLockSupported}
+          error={wakeLockError}
+        />
       </div>
       <div className="flex justify-center w-full">
         <button
@@ -302,6 +300,7 @@ export default function Settings({ setToggleSettings }) {
           style={{ fontFamily: localFont }}
           onClick={() => {
             applyChanges();
+            stopAlarmSound();
           }}
         >
           Apply

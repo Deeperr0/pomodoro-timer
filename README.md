@@ -27,15 +27,15 @@ Users can:
 
 Desktop preview:
 
-![Desktop preview](<MacBook Pro-1725555905393.jpeg>)
+![Desktop preview](./screenshots/Desktop.jpeg)
 
 Tablet preview:
 
-![Tablet preview](iPad-1725555926867.jpeg)
+![Tablet preview](./screenshots/iPad.jpeg)
 
 Mobile preview:
 
-![Mobile preview](<iPhone 12 Pro-1725555978234.jpeg>)
+![Mobile preview](./screenshots/Mobile.jpeg)
 
 ### Links
 

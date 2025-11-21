@@ -152,43 +152,45 @@ export default function Timer({
             />
           </g>
         </svg>
-        <p
-          className={`uppercase text-[80px] md:text-[100px] leading-[99px] cursor-pointer text-customGray font-bold ${
-            font === "Space Mono" ? "tracking-[-5px]" : ""
-          }`}
-          style={{ fontFamily: font }}
-        >
-          {parseTime(remainingTime)}
-        </p>
-        <p
-          onClick={() => {
-            status === "running"
-              ? stopTimer()
+        <div className="flex flex-col items-center w-full">
+          <p
+            className={`uppercase text-[80px] md:text-[100px] leading-[99px] cursor-pointer text-customGray font-bold ${
+              font === "Space Mono" ? "tracking-[-5px]" : ""
+            }`}
+            style={{ fontFamily: font }}
+          >
+            {parseTime(remainingTime)}
+          </p>
+          <p
+            onClick={() => {
+              status === "running"
+                ? stopTimer()
+                : status === "paused"
+                ? startTimer()
+                : status === "stopped" && remainingTime === 0
+                ? resetTimer()
+                : startTimer();
+            }}
+            className={`uppercase text-sm md:text-base leading-[17px] tracking-[13.13px] md:tracking-[15px] cursor-pointer font-bold text-customGray mt-2 z-30 md:mt-5 transition-all duration-200 ${
+              backgroundColor === "#70f3f8"
+                ? "hover:text-[#70f3f8]"
+                : backgroundColor === "#f87070"
+                ? "hover:text-[#f87070]"
+                : backgroundColor === "#d881f8"
+                ? "hover:text-[#d881f8]"
+                : "hover:text-[#f87070]"
+            }`}
+            style={{ fontFamily: font }}
+          >
+            {status === "running"
+              ? "Pause"
               : status === "paused"
-              ? startTimer()
-              : status === "stopped" && remainingTime === 0
-              ? resetTimer()
-              : startTimer();
-          }}
-          className={`uppercase text-sm md:text-base leading-[17px] tracking-[13.13px] md:tracking-[15px] cursor-pointer font-bold text-customGray mt-2 z-30 md:mt-5 transition-all duration-200 ${
-            backgroundColor === "#70f3f8"
-              ? "hover:text-[#70f3f8]"
-              : backgroundColor === "#f87070"
-              ? "hover:text-[#f87070]"
-              : backgroundColor === "#d881f8"
-              ? "hover:text-[#d881f8]"
-              : "hover:text-[#f87070]"
-          }`}
-          style={{ fontFamily: font }}
-        >
-          {status === "running"
-            ? "Pause"
-            : status === "paused"
-            ? "Resume"
-            : remainingTime === 0
-            ? "Restart"
-            : "Start"}
-        </p>
+              ? "Resume"
+              : remainingTime === 0
+              ? "Restart"
+              : "Start"}
+          </p>
+        </div>
       </div>
     </div>
   );

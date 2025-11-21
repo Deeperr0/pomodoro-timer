@@ -3,6 +3,8 @@ import ModeButton from "../components/ModeButton";
 import Timer from "../components/Timer/Timer";
 import Settings from "../components/Settings";
 import Navbar from "../Navbar";
+import { KeepAwakeToggle } from "../components/KeepAwakeToggle/KeepAwakeToggle";
+import { useWakeLock } from "../customHooks/useWakeLock";
 
 export default function Home({ user }) {
   const [mode, setMode] = useState(localStorage.getItem("mode") || "pomodoro");
@@ -15,6 +17,21 @@ export default function Home({ user }) {
   const [status, setStatus] = useState(localStorage.getItem("status"));
   const [timerValue, setTimerValue] = useState(25);
   const [toggleSettings, setToggleSettings] = useState(false);
+
+  // 🔹 new: keep-awake setting, persisted in localStorage
+  const [keepAwake, setKeepAwake] = useState(() => {
+    const saved = localStorage.getItem("keepAwake");
+    return saved === "true";
+  });
+
+  // 🔹 use wake lock hook at page level (always mounted)
+  const { supported, error } = useWakeLock(keepAwake);
+
+  // keep localStorage in sync
+  useEffect(() => {
+    localStorage.setItem("keepAwake", keepAwake ? "true" : "false");
+  }, [keepAwake]);
+
   // On component mount, set initial remaining time if not already in localStorage
   useEffect(() => {
     if (!remainingTime) {
@@ -68,11 +85,19 @@ export default function Home({ user }) {
         }
     }
   }, [mode, toggleSettings]);
+
   return (
     <div className="flex flex-col items-center pb-10">
       <Navbar backgroundColor={backgroundColor} font={font} user={user} />
       {toggleSettings && (
-        <Settings setToggleSettings={setToggleSettings} font={font} />
+        <Settings
+          setToggleSettings={setToggleSettings}
+          font={font}
+          keepAwake={keepAwake}
+          setKeepAwake={setKeepAwake}
+          wakeLockSupported={supported}
+          wakeLockError={error}
+        />
       )}
       <div className="flex rounded-full justify-center py-2 px-[6px] bg-veryDarkBlue mx-6 mt-[45px] relative z-20">
         <ModeButton

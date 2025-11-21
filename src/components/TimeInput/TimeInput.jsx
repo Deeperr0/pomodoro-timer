@@ -1,4 +1,6 @@
-export default function TimeInput({ time, setTime, defaultValue, font }) {
+import PropTypes from "prop-types";
+
+export default function TimeInput({ time, setTime, font }) {
   return (
     <div className="h-8 md:h-10 bg-customLightGray w-[140px] px-4 rounded-[10px] flex items-center justify-between">
       <input
@@ -49,3 +51,9 @@ export default function TimeInput({ time, setTime, defaultValue, font }) {
     </div>
   );
 }
+
+TimeInput.propTypes = {
+  time: PropTypes.number,
+  setTime: PropTypes.func,
+  font: PropTypes.string,
+};

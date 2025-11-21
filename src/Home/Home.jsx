@@ -3,10 +3,9 @@ import ModeButton from "../components/ModeButton";
 import Timer from "../components/Timer/Timer";
 import Settings from "../components/Settings";
 import Navbar from "../Navbar";
-import { KeepAwakeToggle } from "../components/KeepAwakeToggle/KeepAwakeToggle";
 import { useWakeLock } from "../customHooks/useWakeLock";
 
-export default function Home({ user }) {
+export default function Home() {
   const [mode, setMode] = useState(localStorage.getItem("mode") || "pomodoro");
   const backgroundColor =
     localStorage.getItem("localBackgroundColor") || "#F87070";
@@ -18,21 +17,27 @@ export default function Home({ user }) {
   const [timerValue, setTimerValue] = useState(25);
   const [toggleSettings, setToggleSettings] = useState(false);
 
-  // 🔹 new: keep-awake setting, persisted in localStorage
   const [keepAwake, setKeepAwake] = useState(() => {
     const saved = localStorage.getItem("keepAwake");
     return saved === "true";
   });
 
-  // 🔹 use wake lock hook at page level (always mounted)
+  const [pomodoroCount, setPomodoroCount] = useState(() => {
+    const saved = localStorage.getItem("pomodoroCount");
+    return saved ? parseInt(saved, 10) : 0;
+  });
+
+  const [sessionsUntilLongBreak, setSessionsUntilLongBreak] = useState(() => {
+    const saved = localStorage.getItem("sessionsUntilLongBreak");
+    return saved ? parseInt(saved, 10) : 4; // default 4
+  });
+
   const { supported, error } = useWakeLock(keepAwake);
 
-  // keep localStorage in sync
   useEffect(() => {
     localStorage.setItem("keepAwake", keepAwake ? "true" : "false");
   }, [keepAwake]);
 
-  // On component mount, set initial remaining time if not already in localStorage
   useEffect(() => {
     if (!remainingTime) {
       switch (mode) {
@@ -55,9 +60,8 @@ export default function Home({ user }) {
       localStorage.setItem("status", "stopped");
       setStatus("stopped");
     }
-  }, []);
+  }, [mode, remainingTime]);
 
-  // When the mode changes, update the timer settings
   useEffect(() => {
     switch (mode) {
       case "pomodoro":
@@ -84,11 +88,36 @@ export default function Home({ user }) {
           setRemainingTime(25 * 60);
         }
     }
-  }, [mode, toggleSettings]);
+  }, [mode, toggleSettings, status]);
+
+  function handleTimerComplete() {
+    let nextMode = mode;
+
+    if (mode === "pomodoro") {
+      const newCount = pomodoroCount + 1;
+      setPomodoroCount(newCount);
+      localStorage.setItem("pomodoroCount", String(newCount));
+
+      if (newCount % sessionsUntilLongBreak === 0) {
+        nextMode = "long break";
+      } else {
+        nextMode = "short break";
+      }
+    } else {
+      nextMode = "pomodoro";
+    }
+
+    setMode(nextMode);
+    localStorage.setItem("mode", nextMode);
+  }
+
+  const sessionsThisCycle =
+    pomodoroCount % sessionsUntilLongBreak ||
+    (pomodoroCount > 0 ? sessionsUntilLongBreak : 0);
 
   return (
     <div className="flex flex-col items-center pb-10">
-      <Navbar backgroundColor={backgroundColor} font={font} user={user} />
+      <Navbar backgroundColor={backgroundColor} font={font} />
       {toggleSettings && (
         <Settings
           setToggleSettings={setToggleSettings}
@@ -97,6 +126,8 @@ export default function Home({ user }) {
           setKeepAwake={setKeepAwake}
           wakeLockSupported={supported}
           wakeLockError={error}
+          sessionsUntilLongBreak={sessionsUntilLongBreak}
+          setSessionsUntilLongBreak={setSessionsUntilLongBreak}
         />
       )}
       <div className="flex rounded-full justify-center py-2 px-[6px] bg-veryDarkBlue mx-6 mt-[45px] relative z-20">
@@ -133,7 +164,21 @@ export default function Home({ user }) {
         setStatus={setStatus}
         backgroundColor={backgroundColor}
         font={font}
+        onComplete={handleTimerComplete}
       />
+      <div className="text-center mt-10">
+        <p className="mt-4 text-customGray" style={{ fontFamily: font }}>
+          Sessions this cycle: {sessionsThisCycle} / {sessionsUntilLongBreak}
+        </p>
+        <p className="mt-1 text-customGray/70" style={{ fontFamily: font }}>
+          Total pomodoros completed: {pomodoroCount}
+        </p>
+        <p className="mt-1 text-customGray/70" style={{ fontFamily: font }}>
+          Total cycles completed:{" "}
+          {Math.floor(pomodoroCount / sessionsUntilLongBreak)}
+        </p>
+      </div>
+
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="28"

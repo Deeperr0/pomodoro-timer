@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export default function Overlay({ children }) {
   return (
     <div className="fixed top-0 left-0 h-screen w-screen z-40 flex flex-col px-6 md:items-center md:px-0 py-6 md:py-0 md:justify-center bg-[#0A0C1C] bg-opacity-50">
@@ -7,3 +9,7 @@ export default function Overlay({ children }) {
     </div>
   );
 }
+
+Overlay.propTypes = {
+  children: PropTypes.node,
+};

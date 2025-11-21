@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Upload, Music } from "lucide-react";
+import PropTypes from "prop-types";
 
 export function AudioUploadInput({ onChange, fileName }) {
   const [isDragging, setIsDragging] = useState(false);
@@ -87,3 +88,8 @@ export function AudioUploadInput({ onChange, fileName }) {
     </div>
   );
 }
+
+AudioUploadInput.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  fileName: PropTypes.string,
+};

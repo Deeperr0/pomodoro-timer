@@ -10,6 +10,7 @@ export default function Timer({
   setStatus,
   backgroundColor,
   font,
+  onComplete,
 }) {
   const intervalRef = useRef(null);
   const pathRef = useRef(null);
@@ -50,6 +51,11 @@ export default function Timer({
           setRemainingTime(0);
           setStatus("stopped");
 
+          // notify parent that we finished
+          if (onComplete) {
+            onComplete();
+          }
+
           // Play alarm sound when timer reaches 0
           if (audioRef.current) {
             audioRef.current.currentTime = 0; // Reset playback to the start
@@ -71,7 +77,7 @@ export default function Timer({
     return () => {
       clearInterval(intervalRef.current);
     };
-  }, [status]);
+  }, [onComplete, setRemainingTime, timerValue, status, setStatus]);
 
   // When page reloads, calculate remaining time from stored endTime
   useEffect(() => {
@@ -88,7 +94,7 @@ export default function Timer({
         setStatus("stopped");
       }
     }
-  }, []);
+  }, [setRemainingTime, setStatus]);
 
   // Stop alarm sound
   const stopAlarmSound = () => {
@@ -205,4 +211,5 @@ Timer.propTypes = {
   setStatus: PropTypes.func,
   remainingTime: PropTypes.number,
   setRemainingTime: PropTypes.func,
+  onComplete: PropTypes.func,
 };

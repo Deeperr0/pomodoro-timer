@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export function KeepAwakeToggle({ keepAwake, setKeepAwake, supported, error }) {
   if (!supported) {
     return (
@@ -40,3 +42,10 @@ export function KeepAwakeToggle({ keepAwake, setKeepAwake, supported, error }) {
     </div>
   );
 }
+
+KeepAwakeToggle.propTypes = {
+  keepAwake: PropTypes.bool,
+  setKeepAwake: PropTypes.func,
+  supported: PropTypes.bool,
+  error: PropTypes.string,
+};

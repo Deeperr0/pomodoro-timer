@@ -9,11 +9,12 @@ import { AudioUploadInput } from "../AudioUploadInput/AudioUploadInput";
 
 export default function Settings({
   setToggleSettings,
-  font,
   keepAwake,
   setKeepAwake,
   wakeLockSupported,
   wakeLockError,
+  sessionsUntilLongBreak,
+  setSessionsUntilLongBreak,
 }) {
   const [localPomodoro, setLocalPomodoro] = useState(
     parseInt(localStorage.getItem("localPomodoro")) || 25
@@ -122,7 +123,6 @@ export default function Settings({
             <TimeInput
               time={localShortBreak}
               setTime={setLocalShortBreak}
-              defaultValue={localStorage.getItem("localShortBreak") || 5}
               font={localFont}
             />
           </div>
@@ -136,7 +136,6 @@ export default function Settings({
             <TimeInput
               time={localLongBreak}
               setTime={setLocalLongBreak}
-              defaultValue={localStorage.getItem("localLongBreak") || 15}
               font={localFont}
             />
           </div>
@@ -294,6 +293,28 @@ export default function Settings({
           error={wakeLockError}
         />
       </div>
+      <div className="flex justify-between items-center p-6 md:px-10 gap-3 md:gap-4 shrink-0">
+        <span
+          className="text-sm md:text-base text-veryDarkBlue"
+          style={{ fontFamily: localFont }}
+        >
+          Sessions until long break
+        </span>
+        <input
+          type="number"
+          min={1}
+          max={12}
+          value={sessionsUntilLongBreak}
+          onChange={(e) => {
+            const value = parseInt(e.target.value || "1", 10);
+            const safeValue = isNaN(value) ? 1 : Math.max(1, value);
+            setSessionsUntilLongBreak(safeValue);
+            localStorage.setItem("sessionsUntilLongBreak", String(safeValue));
+          }}
+          className="w-16 text-center rounded-lg bg-customLightGray px-3 py-2 text-sm font-bold text-veryDarkBlue outline-none focus:ring-2 focus:ring-customRed"
+          style={{ fontFamily: localFont }}
+        />
+      </div>
       <div className="flex justify-center w-full">
         <button
           className="relative text-sm md:text-base py-4 px-10 md:py-[18px] md:px-12 bg-customRed rounded-full top-5 -mt-8 md:-mt-4 font-bold leading-tight hover:brightness-125"
@@ -312,4 +333,10 @@ export default function Settings({
 
 Settings.propTypes = {
   setToggleSettings: PropTypes.func,
+  keepAwake: PropTypes.bool,
+  setKeepAwake: PropTypes.func,
+  wakeLockSupported: PropTypes.bool,
+  wakeLockError: PropTypes.string,
+  sessionsUntilLongBreak: PropTypes.number,
+  setSessionsUntilLongBreak: PropTypes.func,
 };

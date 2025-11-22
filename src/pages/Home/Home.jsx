@@ -112,7 +112,6 @@ export default function Home() {
           wakeLockError={error}
           sessionsUntilLongBreak={sessionsUntilLongBreak}
           setSessionsUntilLongBreak={setSessionsUntilLongBreak}
-          alarmVersion={alarmVersion}
           setAlarmVersion={setAlarmVersion}
         />
       )}

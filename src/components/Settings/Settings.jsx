@@ -20,7 +20,6 @@ export default function Settings({
   wakeLockError,
   sessionsUntilLongBreak,
   setSessionsUntilLongBreak,
-  alarmVersion,
   setAlarmVersion,
 }) {
   const [localPomodoro, setLocalPomodoro] = useState(
@@ -360,6 +359,5 @@ Settings.propTypes = {
   wakeLockError: PropTypes.string,
   sessionsUntilLongBreak: PropTypes.number,
   setSessionsUntilLongBreak: PropTypes.func,
-  alarmVersion: PropTypes.number,
   setAlarmVersion: PropTypes.func,
 };

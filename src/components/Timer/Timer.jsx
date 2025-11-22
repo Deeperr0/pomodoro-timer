@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import parseTime from "../../utils/parseTime";
 import bell from "../../assets/bell.wav";
+import { FONT_CLASS_MAP } from "../../utils/fontClassMap";
 export default function Timer({
   timerValue,
   remainingTime,
@@ -11,12 +12,14 @@ export default function Timer({
   backgroundColor,
   font,
   onComplete,
+  alarmVersion,
 }) {
   const intervalRef = useRef(null);
   const pathRef = useRef(null);
   const [pathLength, setPathLength] = useState(0);
   const audioRef = useRef(null); // Reference for the alarm audio
   const alarmTimeoutRef = useRef(null); // Reference to stop the alarm after 10 seconds
+
   // Calculate the total length of the path once the component is mounted
   useEffect(() => {
     const length = pathRef.current.getTotalLength();
@@ -25,10 +28,12 @@ export default function Timer({
     // Set the initial stroke-dasharray and stroke-dashoffset
     pathRef.current.style.strokeDasharray = length;
     pathRef.current.style.strokeDashoffset = length;
+  }, []);
 
+  useEffect(() => {
     const alarmSoundURL = localStorage.getItem("alarmSound") || bell;
     audioRef.current = new Audio(alarmSoundURL);
-  }, []);
+  }, [alarmVersion]);
 
   // Update the stroke-dashoffset based on remaining time
   useEffect(() => {
@@ -42,8 +47,11 @@ export default function Timer({
   useEffect(() => {
     if (status === "running") {
       intervalRef.current = setInterval(() => {
-        const endTime = localStorage.getItem("endTime");
-
+        const endTime = Number(localStorage.getItem("endTime"));
+        if (!endTime) {
+          clearInterval(intervalRef.current);
+          return;
+        }
         if (Date.now() >= endTime) {
           clearInterval(intervalRef.current);
           localStorage.setItem("status", "stopped");
@@ -82,7 +90,7 @@ export default function Timer({
   // When page reloads, calculate remaining time from stored endTime
   useEffect(() => {
     const storedStatus = localStorage.getItem("status");
-    const storedEndTime = localStorage.getItem("endTime");
+    const storedEndTime = Number(localStorage.getItem("endTime"));
 
     if (storedStatus === "running" && storedEndTime) {
       const timeLeft = Math.ceil((storedEndTime - Date.now()) / 1000);
@@ -130,8 +138,23 @@ export default function Timer({
     stopAlarmSound();
   }
 
+  useEffect(() => {
+    return () => {
+      // Clear all intervals and timeouts
+      clearInterval(intervalRef.current);
+      clearTimeout(alarmTimeoutRef.current);
+
+      // Stop and clean up audio
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
   return (
-    <div className="relative aspect-square w-[300px] md:w-[410px] rounded-full bg-gradient-to-tl from-gradient-1 p-4 mt-12 shadow-shadow1 shadow-shadow2]">
+    <div className="relative aspect-square w-[300px] md:w-[410px] rounded-full bg-gradient-to-tl from-gradientFrom to-gradientTo p-4 mt-12 shadow-shadow1">
       <div className="flex flex-col items-center justify-center h-full bg-veryDarkBlue rounded-full relative">
         <svg
           id="visual"
@@ -162,12 +185,12 @@ export default function Timer({
           <p
             className={`uppercase text-[80px] md:text-[100px] leading-[99px] cursor-pointer text-customGray font-bold ${
               font === "Space Mono" ? "tracking-[-5px]" : ""
-            }`}
-            style={{ fontFamily: font }}
+            } ${FONT_CLASS_MAP[font] ?? "font-kumbh"}`}
           >
             {parseTime(remainingTime)}
           </p>
-          <p
+          <button
+            type="button"
             onClick={() => {
               status === "running"
                 ? stopTimer()
@@ -185,8 +208,7 @@ export default function Timer({
                 : backgroundColor === "#d881f8"
                 ? "hover:text-[#d881f8]"
                 : "hover:text-[#f87070]"
-            }`}
-            style={{ fontFamily: font }}
+            } ${FONT_CLASS_MAP[font] ?? "font-kumbh"}`}
           >
             {status === "running"
               ? "Pause"
@@ -195,7 +217,7 @@ export default function Timer({
               : remainingTime === 0
               ? "Restart"
               : "Start"}
-          </p>
+          </button>
         </div>
       </div>
     </div>
@@ -206,10 +228,10 @@ Timer.propTypes = {
   font: PropTypes.string,
   backgroundColor: PropTypes.string,
   timerValue: PropTypes.number,
-  setTimerValue: PropTypes.func,
   status: PropTypes.string,
   setStatus: PropTypes.func,
   remainingTime: PropTypes.number,
   setRemainingTime: PropTypes.func,
   onComplete: PropTypes.func,
+  alarmVersion: PropTypes.number,
 };

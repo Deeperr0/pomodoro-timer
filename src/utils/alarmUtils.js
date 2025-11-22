@@ -1,5 +1,5 @@
 
-export function handleAlarmSoundChange(e, setAlarmSoundURL){
+export default function handleAlarmSoundChange(e, setAlarmSoundURL){
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();

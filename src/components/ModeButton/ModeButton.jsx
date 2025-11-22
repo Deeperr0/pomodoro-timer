@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { FONT_CLASS_MAP } from "../../utils/fontClassMap";
 export default function ModeButton({
   mode,
   setMode,
@@ -9,6 +10,8 @@ export default function ModeButton({
 }) {
   return (
     <button
+      type="button"
+      aria-pressed={mode === modeName}
       onClick={() => {
         setMode(modeName);
         localStorage.setItem("mode", modeName);
@@ -16,13 +19,14 @@ export default function ModeButton({
         setStatus("stopped");
       }}
       className={`px-6 py-4 text-xs md:text-sm font-bold rounded-full ${
+        FONT_CLASS_MAP[font] ?? "font-kumbh"
+      } ${
         mode === modeName
           ? "text-darkBlue"
           : "text-customGray opacity-40 hover:opacity-100 transition-all duration-300"
       }`}
       style={{
         backgroundColor: mode === modeName ? backgroundColor : "transparent",
-        fontFamily: font,
       }}
     >
       {modeName}

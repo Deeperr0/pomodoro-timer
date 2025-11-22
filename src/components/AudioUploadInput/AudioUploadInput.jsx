@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Upload, Music } from "lucide-react";
 import PropTypes from "prop-types";
 
-export function AudioUploadInput({ onChange, fileName }) {
+export default function AudioUploadInput({ onChange, fileName }) {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
 

@@ -1,14 +1,16 @@
 import PropTypes from "prop-types";
 
-export function KeepAwakeToggle({ keepAwake, setKeepAwake, supported, error }) {
-  if (!supported) {
-    return (
-      <div className="px-6 md:px-10 py-4 md:py-6">
-        <p className="text-veryDarkBlue text-sm opacity-50">
-          Keep Awake not supported on this device
-        </p>
-      </div>
-    );
+export default function KeepAwakeToggle({
+  keepAwake,
+  setKeepAwake,
+  supported,
+  error,
+}) {
+  if (supported === false) {
+    return <p>Keep Awake not supported on this device</p>;
+  }
+  if (supported === null) {
+    return <p className="text-sm opacity-50">Checking Keep Awake support...</p>;
   }
 
   return (
@@ -22,13 +24,15 @@ export function KeepAwakeToggle({ keepAwake, setKeepAwake, supported, error }) {
 
       {/* Toggle Switch */}
       <button
+        type="button"
         onClick={() => setKeepAwake(!keepAwake)}
         className={`
           relative inline-flex h-8 w-14 items-center rounded-full transition-colors duration-300
           ${keepAwake ? "bg-blue-600" : "bg-gray-300"}
           focus:outline-none
         `}
-        aria-pressed={keepAwake}
+        role="switch" 
+        aria-checked={keepAwake}
         aria-label="Keep awake toggle"
       >
         {/* Sliding Circle */}

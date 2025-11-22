@@ -87,12 +87,18 @@ export default function Timer({
     };
   }, [onComplete, setRemainingTime, timerValue, status, setStatus]);
 
-  // When page reloads, calculate remaining time from stored endTime
   useEffect(() => {
     const storedStatus = localStorage.getItem("status");
+    const storedRemainingTime = Number(localStorage.getItem("remainingTime"));
     const storedEndTime = Number(localStorage.getItem("endTime"));
 
-    if (storedStatus === "running" && storedEndTime) {
+    // If paused, restore the exact remaining time
+    if (storedStatus === "paused" && storedRemainingTime > 0) {
+      setRemainingTime(storedRemainingTime);
+      setStatus("paused");
+    }
+    // If running, calculate from endTime
+    else if (storedStatus === "running" && storedEndTime) {
       const timeLeft = Math.ceil((storedEndTime - Date.now()) / 1000);
       if (timeLeft > 0) {
         setRemainingTime(timeLeft);

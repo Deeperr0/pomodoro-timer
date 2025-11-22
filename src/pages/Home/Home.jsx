@@ -6,6 +6,7 @@ import Navbar from "../../components/Navbar";
 import { useWakeLock } from "../../hooks/useWakeLock";
 import getPresetForMode from "../../utils/getPresetForMode";
 import { FONT_CLASS_MAP } from "../../utils/fontClassMap";
+import Overlay from "../../components/Overlay";
 
 export default function Home() {
   const [mode, setMode] = useState(
@@ -24,7 +25,10 @@ export default function Home() {
   const [status, setStatus] = useState(
     () => localStorage.getItem("status") || "stopped"
   );
-  const [timerValue, setTimerValue] = useState(25);
+  const [timerValue, setTimerValue] = useState(() => {
+    const stored = getPresetForMode(mode);
+    return stored ? Number(stored) : 25;
+  });
   const [toggleSettings, setToggleSettings] = useState(false);
 
   const [keepAwake, setKeepAwake] = useState(() => {
@@ -45,6 +49,8 @@ export default function Home() {
   const [alarmVersion, setAlarmVersion] = useState(0);
 
   const { supported, error } = useWakeLock(keepAwake);
+
+  const [toggleResetConfirmation, setToggleResetConfirmation] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("keepAwake", keepAwake ? "true" : "false");
@@ -110,6 +116,37 @@ export default function Home() {
           setAlarmVersion={setAlarmVersion}
         />
       )}
+      {toggleResetConfirmation && (
+        <Overlay>
+          <div
+            className={`bg-darkBlue p-16 py-24 rounded-xl overflow-hidden flex flex-col gap-4 ${
+              FONT_CLASS_MAP[font] ?? "font-kumbh"
+            }`}
+          >
+            <p className="text-white text-2xl font-semibold">
+              Are you sure you want to reset?
+            </p>
+            <div className="flex justify-center gap-6 mt-6">
+              <button
+                className="text-white px-6 py-2 font-medium text-lg"
+                onClick={() => setToggleResetConfirmation(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-red-500 text-red-50 font-medium px-6 py-2 text-lg rounded-md"
+                onClick={() => {
+                  setPomodoroCount(0);
+                  localStorage.setItem("pomodoroCount", "0");
+                  setToggleResetConfirmation(false);
+                }}
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+        </Overlay>
+      )}
       <div className="flex rounded-full justify-center py-2 px-[6px] bg-veryDarkBlue mx-6 mt-[45px] relative z-20">
         {["pomodoro", "short break", "long break"].map((modeName) => (
           <ModeButton
@@ -159,10 +196,16 @@ export default function Home() {
         </p>
       </div>
       <button
+        className="rounded-lg px-8 py-2 mt-6 text-lg font-medium bg-veryDarkBlue text-white"
+        onClick={() => setToggleResetConfirmation(true)}
+      >
+        Reset
+      </button>
+      <button
         type="button"
         aria-label="Open settings"
         onClick={() => setToggleSettings(!toggleSettings)}
-        className="mt-20 cursor-pointer opacity-50 hover:opacity-100 transition-all duration-300"
+        className="mt-10 cursor-pointer opacity-50 hover:opacity-100 transition-all duration-300"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28">
           <path
